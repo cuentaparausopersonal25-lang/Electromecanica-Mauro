@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}Error {{ code }} | Electromecánica Mauro{% endblock %}{% block content %}<section class="result-hero"><span class="eyebrow">EM / {{ code }}</span><h1>Ups, algo pasó.</h1><p>{{ message }}</p><a class="btn primary" href="{{ url_for('index') }}">Volver al inicio</a></section>{% endblock %}
