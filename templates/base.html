@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071426">
+<title>{% block title %}Electromecánica Mauro{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">EM</span><span>ELECTROMECÁNICA <b>MAURO</b><small>FORMACIÓN TÉCNICA ONLINE</small></span></a>
+<button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+<nav class="nav">
+<a href="{{ url_for('index') }}">Inicio</a><a href="{{ url_for('index') }}#cursos">Cursos</a>
+{% if current_user %}<a href="{{ url_for('my_results') }}">Mi progreso</a>{% endif %}
+{% if current_role in ['owner','admin'] %}<a href="{{ url_for('admin') }}">Administración</a>{% endif %}
+{% if current_role == 'owner' %}<a href="{{ url_for('platform_update') }}">Actualizar plataforma</a>{% endif %}
+{% if current_user %}<span class="user-chip">{{ current_user }}</span><a class="nav-cta" href="{{ url_for('logout') }}">Salir</a>{% else %}<a href="{{ url_for('login') }}">Ingresar</a><a class="nav-cta" href="{{ url_for('register') }}">Crear cuenta</a>{% endif %}
+</nav></header>
+<main>
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-wrap">{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+{% block content %}{% endblock %}
+</main>
+<footer><div class="footer-brand">EM <strong>ELECTROMECÁNICA MAURO</strong></div><p>Aprendé. Practicá. Avanzá.</p><a href="{{ wa_url }}" target="_blank" rel="noopener">Contactar por WhatsApp</a><small>© 2026 Electromecánica Mauro · Cursos gratuitos</small></footer>
+</body></html>
