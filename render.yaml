@@ -10,12 +10,8 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATA_DIR
-        value: /var/data
+        value: /tmp/electromecanica-mauro/data
       - key: UPLOAD_DIR
-        value: /var/data/uploads
+        value: /tmp/electromecanica-mauro/uploads
       - key: COOKIE_SECURE
         value: "true"
-    disk:
-      name: electromecanica-data
-      mountPath: /var/data
-      sizeGB: 1
