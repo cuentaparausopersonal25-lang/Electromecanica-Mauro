@@ -8,11 +8,25 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 ROOT = Path(__file__).resolve().parent
-DATA_DIR = Path(os.environ.get("DATA_DIR", ROOT / "instance"))
-UPLOAD_DIR = Path(os.environ.get("UPLOAD_DIR", ROOT / "uploads"))
+
+# Render Free no ofrece discos persistentes. Si /var/data no está montado
+# o no tiene permisos, usamos /tmp para permitir que la aplicación arranque.
+FALLBACK_DIR = Path("/tmp/electromecanica-mauro")
+
+def prepare_directory(config_value, fallback):
+    folder = Path(config_value) if config_value else fallback
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+        return folder
+    except OSError:
+        fallback.mkdir(parents=True, exist_ok=True)
+        return fallback
+
+DATA_DIR = prepare_directory(os.environ.get("DATA_DIR"), FALLBACK_DIR / "data")
+UPLOAD_DIR = prepare_directory(os.environ.get("UPLOAD_DIR"), FALLBACK_DIR / "uploads")
 VIDEO_DIR = UPLOAD_DIR / "videos"
 UPDATE_DIR = UPLOAD_DIR / "updates"
-for folder in (DATA_DIR, VIDEO_DIR, UPDATE_DIR):
+for folder in (VIDEO_DIR, UPDATE_DIR):
     folder.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
