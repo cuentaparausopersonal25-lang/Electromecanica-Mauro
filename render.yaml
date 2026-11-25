@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: electromecanica-mauro
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATA_DIR
+        value: /var/data
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: COOKIE_SECURE
+        value: "true"
+    disk:
+      name: electromecanica-data
+      mountPath: /var/data
+      sizeGB: 1
